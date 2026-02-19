@@ -112,7 +112,7 @@ The first piece of analyse looks at the relationship between total steps and cal
 
 ### Calories vs Hours Asleep
 Interestingly, there is not a postive correlation between hours spent asleep and calories burnt. The idea for this piece of analysis was suggest that the more sleep someone was getting, the more active they would be during there day. From this 30 person dataset, this is not the case. It would be great to get a larger sample size to understand if this remains true, or if there is a 'ideal' amount of sleep a person should get to maximise activity.
-![Calories vs Hours Asleep](https://github.com/EdwardRook/Case-Study-2-How-Can-a-Wellness-Technology-Company-Play-It-Smart-/blob/main/Calories%20vs%20Hours%20Asleep.png)raw=true "Calories vs Hours Asleep")
+![Calories vs Hours Asleep](https://github.com/EdwardRook/Case-Study-2-How-Can-a-Wellness-Technology-Company-Play-It-Smart-/blob/main/Calories%20vs%20Hours%20Asleep.png?raw=true "Calories vs Hours Asleep")
 
 
 
