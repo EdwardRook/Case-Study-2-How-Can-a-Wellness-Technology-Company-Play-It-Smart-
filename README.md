@@ -53,6 +53,75 @@ FitBit Fitness Tracker Data on [Kaggle]( https://www.kaggle.com/datasets/arashni
 
 I used two tools. RStudio was used to clean and organise my data. Tableau was used to create my visualisations.
 
-### Cleaning
+### Cleaning and Transforming
+
+1. Install and load the library packages I intend to use for processing and cleaning
+2. Assign names to my datasets to make them easier to work with.
+3. Check to see if data has loaded correctly.
+4. Merge `hourly_calories`, `hourley_intensity`, and `hourly_steps` into one table called `hourly_activity`.
+```
+hourly_activity <- merge(hourly_intensity, hourly_calories, by=c("Id", "ActivityHour"))
+hourly_activity <- merge(hourly_activity, hourly_steps, by=c("Id", "ActivityHour"))
+```
+5. Clean coloumn names and remove capital letters.
+```
+# Remove capital letters
+daily_activity <- rename_with(daily_activity, tolower)
+daily_sleep <- rename_with(daily_sleep, tolower)
+hourly_activity <- rename_with(hourly_activity, tolower)
+
+# Check for duplicates
+sum(duplicated(daily_activity))
+sum(duplicated(daily_sleep))
+sum(duplicated(hourly_activity))
+```
+6. Remove any duplicates found in my datasets. 3 Duplicates were found in `daily_sleep`
+```
+daily_sleep <- unique(daily_sleep)
+sum(duplicated(daily_sleep))
+```
+7. Add a day of the week variable and sorted from Monday to Sunday
+```
+daily_activity$day_of_week <- wday(daily_activity$activitydate)
+daily_activity <- daily_activity %>%
+  mutate(day_of_week = recode(day_of_week
+    ,"1" = "Sunday"
+    ,"2" = "Monday"
+    ,"3" = "Tuesday"
+    ,"4" = "Wednesday"
+    ,"5" = "Thursday"
+    ,"6" = "Friday"
+    ,"7" = "Saturday"))
+
+daily_activity$day_of_week <- ordered(daily_activity$day_of_week, levels=c("Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"))
+```
+8. Add a columns to understand how much daily activity and sleep each participant is getting.
+```
+daily_activity$total_active_hours = (daily_activity$fairlyactiveminutes  + daily_activity$lightlyactiveminutes + daily_activity$sedentaryminutes + daily_activity$veryactiveminutes)/60
+daily_activity$total_active_hours <- round(daily_activity$total_active_hours,2)
+
+daily_sleep$hours_in_bed <- round((daily_sleep$totalminutesasleep)/60,1)
+daily_sleep$hours_asleep <- round((daily_sleep$totaltimeinbed)/60,1)
+```
+
+## Analyse
+
+### TotalSteps vs Calories Burn
+The first piece of analyse looks at the relationship between total steps and calories burned. As you can see there is a positive correlation between the amount of steps a participant takes and the calories that they burn. From this we can draw the conclusion that the more active a person is, the more calories they will burn.
+![TotalSteps vs Calories Burn](https://github.com/EdwardRook/Case-Study-2-How-Can-a-Wellness-Technology-Company-Play-It-Smart-/blob/main/TotalSteps%20vs%20Calories.png?raw=true "TotalSteps vs Calories Burn")
+
+### Calories vs Hours Asleep
+Interestingly, there is not a postive correlation between hours spent asleep and calories burnt. The idea for this piece of analysis was suggest that the more sleep someone was getting, the more active they would be during there day. From this 30 person dataset, this is not the case. It would be great to get a larger sample size to understand if this remains true, or if there is a 'ideal' amount of sleep a person should get to maximise activity.
+![Calories vs Hours Asleep](https://github.com/EdwardRook/Case-Study-2-How-Can-a-Wellness-Technology-Company-Play-It-Smart-/blob/main/Calories%20vs%20Hours%20Asleep.png)raw=true "Calories vs Hours Asleep")
+
+
+
+
+
+
+
+
+
+
 
 
